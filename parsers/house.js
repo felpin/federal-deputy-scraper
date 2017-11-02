@@ -2,6 +2,8 @@ const cheerio = require('cheerio');
 
 const extractInformation = (node, child = 1) => node.children[child].data.trim();
 
+const extractText = node => node.text().trim();
+
 const extractDeputies = (html) => {
   const $ = cheerio.load(html);
 
@@ -18,6 +20,21 @@ const extractDeputies = (html) => {
       };
     })
     .get();
+};
+
+const extractDeputyAddressAndEmail = (html) => {
+  const $ = cheerio.load(html);
+  const addressAndEmail = $('ul.visualNoMarker').eq(5).children();
+
+  const extractAddressAndEmailPart = part => extractText(addressAndEmail.eq(part));
+
+  const address = `${extractAddressAndEmailPart(0)} - ${extractAddressAndEmailPart(1)} - ${extractAddressAndEmailPart(2)}`;
+  const email = extractAddressAndEmailPart(3);
+
+  return {
+    address,
+    email,
+  };
 };
 
 const extractDeputyInformations = (html) => {
@@ -56,6 +73,7 @@ const extractDeputyProfilePictureUrl = (html) => {
 
 module.exports = {
   extractDeputies,
+  extractDeputyAddressAndEmail,
   extractDeputyInformations,
   extractDeputyProfilePictureUrl,
 };
