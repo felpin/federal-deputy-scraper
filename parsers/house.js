@@ -71,9 +71,16 @@ const extractDeputyProfilePictureUrl = (html) => {
   return $('img.image-left')[0].attribs.src;
 };
 
+const extractDeputysPartyProfilePictureUrl = (html) => {
+  const $ = cheerio.load(html);
+
+  return $('img.rightPositioned.distanciado1.distancia-somente-direita')[0].attribs.src;
+};
+
 module.exports = {
   extractDeputies,
   extractDeputyAddressAndEmail,
   extractDeputyInformations,
   extractDeputyProfilePictureUrl,
+  extractDeputysPartyProfilePictureUrl,
 };
